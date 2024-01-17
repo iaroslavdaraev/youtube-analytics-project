@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from googleapiclient.discovery import build
 
 load_dotenv()
-
+api_key = os.getenv('YOUTUBE_API_KEY')
 
 class Channel:
     """Класс для ютуб-канала"""
@@ -13,7 +13,6 @@ class Channel:
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.channel_id = channel_id
-        api_key = os.getenv('YOUTUBE_API_KEY')
         self.youtube = build('youtube', 'v3', developerKey=api_key)
         self.channel = self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
         self.title = self.channel['items'][0]['snippet']['title']
@@ -32,3 +31,8 @@ class Channel:
         """Выводит в консоль информацию о канале."""
         channel = self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
         self.printj(channel)
+
+    @classmethod
+    def get_service(cls):
+        youtube = build('youtube', 'v3', developerKey=api_key)
+        return youtube
