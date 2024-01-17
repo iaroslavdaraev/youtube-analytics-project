@@ -36,3 +36,18 @@ class Channel:
     def get_service(cls):
         youtube = build('youtube', 'v3', developerKey=api_key)
         return youtube
+
+    def to_json(self, filename):
+        data_info = {
+            "channel_id": self.channel_id,
+            "title": self.title,
+            "description": self.description,
+            "url": self.url,
+            "subscriber_count": self.subscriber_count,
+            "video_count": self.video_count,
+            "view_count": self.view_count
+        }
+
+        with open(filename, "w", encoding="utf-8") as file:
+            json.dump(data_info, file)
+        return data_info
